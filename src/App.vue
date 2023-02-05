@@ -6,7 +6,8 @@ import TaskForm from "./components/TaskForm.vue";
 import { useTaskStore } from "./stores/TaskStore";
 
 const taskStore = useTaskStore();
-const { tasks, isLoading, favs, totalCount, favCount } = storeToRefs(taskStore);
+const { tasks, title, isLoading, favs, totalCount, favCount } =
+  storeToRefs(taskStore);
 taskStore.getTask();
 const filter = ref("all");
 </script>
@@ -14,7 +15,7 @@ const filter = ref("all");
   <main>
     <!-- heading -->
     <header>
-      <h1>{{ taskStore.title }}</h1>
+      <h1>{{ title }}</h1>
     </header>
     <!-- new task form -->
     <div class="new-task-form">
@@ -26,17 +27,17 @@ const filter = ref("all");
       <button @click="filter = 'favs'">Favourite tasks</button>
     </nav>
     <!-- loading -->
-    <div class="loading" v-if="taskStore.isLoading">Loading tasks...</div>
+    <div class="loading" v-if="isLoading">Loading tasks...</div>
     <!-- task list -->
     <div class="task-list" v-if="filter === 'all'">
-      <h3>All tasks ({{ taskStore.totalCount }})</h3>
-      <div v-for="task in taskStore.tasks">
+      <h3>All tasks ({{ totalCount }})</h3>
+      <div v-for="task in tasks">
         <TaskDetails :task="task" />
       </div>
     </div>
     <div class="task-list" v-else>
-      <h3>Favourite tasks ({{ taskStore.favCount }})</h3>
-      <div v-for="task in taskStore.favs">
+      <h3>Favourite tasks ({{ favCount }})</h3>
+      <div v-for="task in favs">
         <TaskDetails :task="task" />
       </div>
     </div>
